@@ -1,0 +1,32 @@
+suspend fun mgain() {
+
+    System.exit(0)
+
+    embeddedServer(Netty, port = 8080) {
+        install(CORS) {
+            anyHost()
+            allowHeader(HttpHeaders.ContentType)
+        }
+        install(ServerNegotiation) {
+            json()
+        }
+        routing {
+            testRoute()
+            projectsRoute()
+        }
+    }.start(wait = true)
+}
+
+
+
+    suspend fun getLatestCommitHash(user: String, repo: String): String {
+        @Serializable
+        data class Tree(val sha: String)
+        @Serializable
+        data class GitHubResponseCommit(val tree: Tree)
+        @Serializable
+        data class GitHubResponse(val commit: GitHubResponseCommit)
+
+        val response = Requestor.get<GitHubResponse>("https://api.github.com/repos/capturecoop/SnipSniper/commits/master")
+        return response.commit.tree.sha
+    }
