@@ -1,0 +1,10 @@
+{
+    "repo": "https://github.com/CaptureCoop/SnipSniper.git",
+    "repoName": "SnipSniper",
+    "branch": "master",
+    "buildDir": "build/libs",
+    "preBuildScripts": [
+        "git submodule update --init --recursive"
+    ],
+    "buildScript": "gradlew.bat build -Dtype=release"
+}
